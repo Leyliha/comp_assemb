@@ -1,0 +1,47 @@
+%{
+
+#include <stdio.h>
+
+%}
+
+%%
+
+
+
+mov|MOV {  printf("Opcode MOV " ); }
+jmp|JMP {  printf("Opcode JMP "); }
+nop|NOP {  printf("Opcode NOP ");}
+
+a|A  {  printf("register ");  printf("%s ", yytext); }
+x|X  {  printf("register ");  printf("%s ", yytext); }
+y|Y  {  printf("register ");  printf("%s ", yytext); }
+
+
+(0|1|2|3|4|5|6|7|8|9)+   {  printf("NUM (decimal) "); int val; val=strtol(yytext, 0, 10);
+printf("val:%d  ", val) ;}
+-(1|2|3|4|5|6|7|8|9|0)+   {  printf("NUM (negative decimal) ");  }
+0[xX][0-9a-fA-F]+   {printf("NUM (hexadecimal) "); int val; val=strtol(yytext,0 ,16); printf("val:%d  ", val) ;}
+
+
+" " { /*Lets get rid of the spaces*/  }
+[[:space:]]+
+
+","  { printf("comma "); printf("%s ", yytext); }
+"[" { printf("opening bracket "); }
+"]" { printf("closing bracket "); }
+
+
+
+"." {printf("it should not be here  ");}
+
+
+              
+%%            
+              
+int yywrap(void){return 1;}
+              
+int main()
+{
+  yylex();
+  return 0;
+}
